@@ -106,7 +106,9 @@ class EvalPipeline(pl.LightningModule):
             audios = self.model(
                 batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
             ).audios
+            print("pass")
             audios = torch.tensor(audios)
+            print("pass")
 
         processed_audios = []
         for i in range(audios.shape[0]):
@@ -116,7 +118,7 @@ class EvalPipeline(pl.LightningModule):
             wav = wav.clamp(-1, 1)
             wav = (wav * 32767).to(torch.int16).cpu()
             processed_audios.append(wav)
-
+        print("pass")
         audios = torch.stack(processed_audios, dim=0)
         logging.info(f"Generated {len(audios)} audio samples for batch {batch_idx}")
 
