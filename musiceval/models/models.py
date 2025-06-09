@@ -107,7 +107,7 @@ class EvalPipeline(pl.LightningModule):
                 batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
             ).audios
             print("pass")
-            audios = torch.tensor(audios)
+            audios = torch.tensor(audios).unsqueeze(1)
             print("pass")
 
         processed_audios = []
