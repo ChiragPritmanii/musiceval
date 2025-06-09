@@ -50,6 +50,7 @@ class EvalPipeline(pl.LightningModule):
                 "stabilityai/stable-audio-open-small"
             )
             self.model_sr = self.model_config["sample_rate"]
+            self.sample_size = self.model_config["sample_size"]
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "stable-audio-open-small"
             )
@@ -86,12 +87,17 @@ class EvalPipeline(pl.LightningModule):
             ).to(self.device)
             audios = self.model.generate(**inputs, max_new_tokens=512)
         elif self.model_name == "stable-audio-open-small":
-            inputs = [{"prompt": prompt, "seconds_total":10} for prompt in batch["prompts"]]
+            inputs = [
+                {"prompt": prompt, "seconds_total": 10} for prompt in batch["prompts"]
+            ]
             audios = generate_diffusion_cond(
                 self.model,
                 conditioning=inputs,
-                sample_size=self.model_config["sample_size"],
                 device=self.device,
+                steps=8,
+                cfg_scale=1.0,
+                sample_size=self.sample_size,
+                sampler_type="pingpong",
             )
         elif self.model_name == "musicldm":
             audios = self.model(
