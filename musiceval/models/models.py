@@ -65,6 +65,7 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(self.gen_data_dir, self.dataset, "musicldm")
             self.model_sr = self.model.vocoder.config.sampling_rate
             self.model = self.model.to(self.device)
+            print(self.device, self.model.device)
         else:
             raise ValueError(f"Model {self.model_name} is not supported.")
         
