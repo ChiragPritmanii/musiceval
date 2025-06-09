@@ -104,6 +104,7 @@ class EvalPipeline(pl.LightningModule):
             )
         elif self.model_name == "musicldm":
             print(self.model.device)
+            self.model = self.model.cuda()
             audios = self.model(
                 batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
             ).audios
