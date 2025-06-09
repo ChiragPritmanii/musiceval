@@ -1,0 +1,10 @@
+torch
+torchaudio
+scipy
+numpy==1.26.4
+transformers
+diffusers
+stable-audio-tools
+laion-clap
+hypy-utils
+pytorch-lightning
