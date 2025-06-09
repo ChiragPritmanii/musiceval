@@ -31,8 +31,8 @@ class EvalPipeline(pl.LightningModule):
         self.model_name = model_name
         self.batch_size = batch_size
         self.dataset = dataset
-        self.data_dir = data_dir
-        self.gen_data_dir = gen_data_dir
+        self.data_dir = os.path.join(os.getcwd(), data_dir)
+        self.gen_data_dir = os.path.join(os.getcwd(), gen_data_dir)
         self._load_model()
 
     def _load_model(self):

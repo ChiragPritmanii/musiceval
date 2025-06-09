@@ -23,7 +23,7 @@ class ModelLoader(ABC):
             min_len (int, optional): Enforce a minimal length for the audio in seconds. Defaults to -1 (no minimum).
         """
         self.model = None
-        self.model_dir = model_dir
+        self.model_dir = os.path.join(os.getcwd(), model_dir)
         self.sr = sr
         self.num_features = num_features
         self.name = name

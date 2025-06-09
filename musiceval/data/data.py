@@ -19,7 +19,7 @@ class EvalDataset(Dataset):
     def __init__(self, dataset: str, data_dir: str):
         assert dataset in DATASETS, f"Dataset must be one of {DATASETS}"
         self.dataset = dataset
-        self.data_dir = data_dir
+        self.data_dir = os.path.join(os.getcwd(), data_dir)
         self._load_dataset()
 
     def _load_dataset(self):
