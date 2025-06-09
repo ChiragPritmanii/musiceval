@@ -10,7 +10,7 @@ import torchaudio
 from torch.utils.data import Dataset
 
 SEED = 42
-FILELIMIT = 100
+FILELIMIT = 10
 DATASETS = ["fma-caps", "music-bench"]
 
 random.seed(SEED)
