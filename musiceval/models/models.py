@@ -44,6 +44,8 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "musicgen-small"
             )
+            self.model = self.model.to(self.device)
+            self.model.eval()
         elif self.model_name == "stable-audio-open-small":
             hf_model_id = "stabilityai/stable-audio-open-small"
             self.model, self.model_config = get_pretrained_model(
@@ -53,6 +55,8 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "stable-audio-open-small"
             )
+            self.model = self.model.to(self.device)
+            self.model.eval()
         elif self.model_name == "musicldm":
             hf_model_id = "ucsd-reach/musicldm"
             self.model = MusicLDMPipeline.from_pretrained(
@@ -60,10 +64,10 @@ class EvalPipeline(pl.LightningModule):
             )
             self.output_dir = os.path.join(self.gen_data_dir, self.dataset, "musicldm")
             self.model_sr = self.model.vocoder.config.sampling_rate
+            self.model = self.model.to(self.device)
         else:
             raise ValueError(f"Model {self.model_name} is not supported.")
-        self.model = self.model.to(self.device)
-        self.model.eval()
+        
         logging.info(f"Loaded model {self.model_name}")
 
     def predict_dataloader(self):
