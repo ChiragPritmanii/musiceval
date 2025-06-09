@@ -84,9 +84,9 @@ class EvalPipeline(pl.LightningModule):
             inputs = self.processor(
                 text=batch["prompts"], return_tensors="pt", padding=True
             ).to(self.device)
-            audios = self.model.generate(**inputs, max_new_tokens=500)
+            audios = self.model.generate(**inputs, max_new_tokens=512)
         elif self.model_name == "stable-audio-open-small":
-            inputs = [{"prompt": prompt} for prompt in batch["prompts"]]
+            inputs = [{"prompt": prompt, "seconds_total":10} for prompt in batch["prompts"]]
             audios = generate_diffusion_cond(
                 self.model,
                 conditioning=inputs,
