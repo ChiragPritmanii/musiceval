@@ -68,5 +68,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # python generate.py --score fad  model_name musicgen-small --encoder_name clap --dataset fma-caps --data_dir musicdata --gen_data_dir musicdata/generations --encoder_dir pretrained
+    # python evaluate.py --score fad  model_name musicgen-small --encoder_name clap --dataset fma-caps --data_dir musicdata --gen_data_dir musicdata/generations --encoder_dir pretrained
     main()

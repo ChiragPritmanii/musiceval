@@ -169,7 +169,7 @@ class CLAPLaionModel(ModelLoader):
         self.model.eval()
 
     def load_wav(self, wav_file: str):
-        new = wav_file.replace(wav_file.split("/")[-1], f"convert/{self.sr}/{wav_file.split("/")[-1]}")
+        new = wav_file.replace(wav_file.split("/")[-1], f"convert/{self.sr}/{wav_file.split('/')[-1]}")
         new = Path(new)
         if not os.path.exists(new):
             x, fsorig = torchaudio.load(wav_file)
