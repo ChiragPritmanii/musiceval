@@ -83,7 +83,7 @@ class CLAPLaionModel(ModelLoader):
         super().__init__(name="clap-laion-music", num_features=512, sr=48000, min_len=10, model_dir=model_dir)
         url = 'https://huggingface.co/lukewys/laion_clap/resolve/main/music_audioset_epoch_15_esc_90.14.pt'
 
-        self.model_file = os.path.join(self.model_dir, url.split('/')[-1])
+        self.model_file = Path(os.path.join(self.model_dir, url.split('/')[-1]))
 
         # Download file if it doesn't exist
         if not self.model_file.exists():
