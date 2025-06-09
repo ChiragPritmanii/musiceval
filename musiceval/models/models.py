@@ -43,8 +43,8 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "musicgen-small"
             )
-            # self.model = self.model.to(self.device)
-            # self.model.eval()
+            self.model = self.model.to(self.device)
+            self.model.eval()
         elif self.model_name == "stable-audio-open-small":
             hf_model_id = "stabilityai/stable-audio-open-small"
             self.model, self.model_config = get_pretrained_model(
@@ -54,8 +54,8 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "stable-audio-open-small"
             )
-            # self.model = self.model.to(self.device)
-            # self.model.eval()
+            self.model = self.model.to(self.device)
+            self.model.eval()
         elif self.model_name == "musicldm":
             hf_model_id = "ucsd-reach/musicldm"
             self.model = MusicLDMPipeline.from_pretrained(
@@ -63,8 +63,7 @@ class EvalPipeline(pl.LightningModule):
             )
             self.output_dir = os.path.join(self.gen_data_dir, self.dataset, "musicldm")
             self.model_sr = self.model.vocoder.config.sampling_rate
-            # self.model = self.model.to(self.device)
-            # print(self.device, self.model.device)
+            self.model = self.model.to(self.device)
         else:
             raise ValueError(f"Model {self.model_name} is not supported.")
         
@@ -103,11 +102,11 @@ class EvalPipeline(pl.LightningModule):
                 sampler_type="pingpong"
             )
         elif self.model_name == "musicldm":
-            print(self.model.device)
             self.model = self.model.to("cuda")
             audios = self.model(
                 batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
             ).audios
+            audios = torch.tensor(audios)
 
         processed_audios = []
         for i in range(audios.shape[0]):
