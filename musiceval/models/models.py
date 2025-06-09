@@ -33,9 +33,8 @@ class EvalPipeline(pl.LightningModule):
         self.dataset = dataset
         self.data_dir = os.path.join(os.getcwd(), data_dir)
         self.gen_data_dir = os.path.join(os.getcwd(), gen_data_dir)
-        self._load_model()
 
-    def _load_model(self):
+    def setup(self, stage=None):
         if self.model_name == "musicgen-small":
             hf_model_id = "facebook/musicgen-small"
             self.processor = AutoProcessor.from_pretrained(hf_model_id)
@@ -44,8 +43,8 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "musicgen-small"
             )
-            self.model = self.model.to(self.device)
-            self.model.eval()
+            # self.model = self.model.to(self.device)
+            # self.model.eval()
         elif self.model_name == "stable-audio-open-small":
             hf_model_id = "stabilityai/stable-audio-open-small"
             self.model, self.model_config = get_pretrained_model(
@@ -55,8 +54,8 @@ class EvalPipeline(pl.LightningModule):
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "stable-audio-open-small"
             )
-            self.model = self.model.to(self.device)
-            self.model.eval()
+            # self.model = self.model.to(self.device)
+            # self.model.eval()
         elif self.model_name == "musicldm":
             hf_model_id = "ucsd-reach/musicldm"
             self.model = MusicLDMPipeline.from_pretrained(
@@ -64,7 +63,7 @@ class EvalPipeline(pl.LightningModule):
             )
             self.output_dir = os.path.join(self.gen_data_dir, self.dataset, "musicldm")
             self.model_sr = self.model.vocoder.config.sampling_rate
-            self.model = self.model.to(self.device)
+            # self.model = self.model.to(self.device)
             print(self.device, self.model.device)
         else:
             raise ValueError(f"Model {self.model_name} is not supported.")
