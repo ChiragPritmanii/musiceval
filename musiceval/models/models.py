@@ -99,6 +99,7 @@ class EvalPipeline(pl.LightningModule):
                 steps=8,
                 cfg_scale=1.0,
                 batch_size=len(inputs),
+                sample_size=self.model_config["sample_size"],
                 sampler_type="pingpong",
             )
         elif self.model_name == "musicldm":
