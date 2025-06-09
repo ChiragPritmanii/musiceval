@@ -15,12 +15,12 @@ class CLAPScore:
         self.ref_samples = ref_data.samples
         self.ref_texts = [sample["main_caption"] for sample in self.ref_samples]
         self.ref_audio_paths = [
-            os.path.join(os.getcwd(), data_dir, ref_data.dataset, sample["location"])
+            os.path.join(os.getcwd(), data_dir, ref_data.dataset_name, sample["location"])
             for sample in self.ref_samples
         ]
         self.gen_audio_paths = [
             os.path.join(
-                os.getcwd(), gen_data_dir, ref_data.dataset_name, model_name, path.split("/")[-1]
+                os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]
             )
             for path in self.ref_audio_paths
         ]
