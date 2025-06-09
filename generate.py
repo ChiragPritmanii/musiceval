@@ -31,8 +31,7 @@ def main():
         data_dir=args.data_dir,
         gen_data_dir=args.gen_data_dir
     )
-    model = model.to("cuda")
-    
+        
     exc_callback = ExceptionCallback()
     trainer = pl.Trainer(
         devices="auto",
