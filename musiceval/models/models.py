@@ -33,7 +33,6 @@ class EvalPipeline(pl.LightningModule):
         self.dataset = dataset
         self.data_dir = data_dir
         self.gen_data_dir = gen_data_dir
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self._load_model()
 
     def _load_model(self):
