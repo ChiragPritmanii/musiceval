@@ -70,7 +70,7 @@ class FADScore:
         ]
         self.gen_audio_paths = [
             os.path.join(
-                os.getcwd(), gen_data_dir, ref_data.dataset_name, model_name, path.split("/")[-1]
+                os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]
             )
             for path in self.ref_audio_paths
         ]
