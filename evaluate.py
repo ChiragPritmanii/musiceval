@@ -1,6 +1,8 @@
 import logging
 import argparse
 
+from huggingface_hub import login
+
 from musiceval.metrics.metrics import CLAPScore, FADScore
 
 SCORES = ["clap", "fad"]
@@ -30,8 +32,10 @@ def main():
         default="pretrained",
         help="Encoder Checkpoint Directory",
     )
+    parser.add_argument("--hf_token", type=str, default="", help="HF Token")
 
     args = parser.parse_args()
+    login(token=args.hf_token)
 
     assert args.score in SCORES, (
         f"Score {args.score} is not supported. Choose from {SCORES}."
