@@ -103,6 +103,7 @@ class EvalPipeline(pl.LightningModule):
                 sampler_type="pingpong"
             )
         elif self.model_name == "musicldm":
+            print(self.model.device)
             audios = self.model(
                 batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
             ).audios
