@@ -7,6 +7,7 @@ from typing import Dict, List
 
 import torch
 import torchaudio
+import torch.nn.functional as F
 from torch.utils.data import Dataset
 
 SEED = 42
@@ -78,6 +79,15 @@ class EvalDataset(Dataset):
         try:
             audio_path = os.path.join(self.data_dir, self.dataset_name, audio_path)
             wav, sr = torchaudio.load(audio_path, normalize=True)
+            
+            fixed_len = 10*sr
+            wav_len = wav.shape[1]
+            
+            if wav_len >= fixed_len:
+                wav = wav[:, :fixed_len]
+            elif wav_len < fixed_len:
+                wav = F.pad(wav, (0, fixed_len - wav_len), "constant", value=0)
+            
             return wav, sr
         except Exception as e:
             print(f"Error loading item {audio_path}: {e}")
