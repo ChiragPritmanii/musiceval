@@ -66,7 +66,7 @@ class EvalPipeline(pl.LightningModule):
             self.model = self.model.to(self.device)
         else:
             raise ValueError(f"Model {self.model_name} is not supported.")
-        
+
         logging.info(f"Loaded model {self.model_name}")
 
     def predict_dataloader(self):
@@ -99,16 +99,14 @@ class EvalPipeline(pl.LightningModule):
                 steps=8,
                 cfg_scale=1.0,
                 batch_size=len(inputs),
-                sampler_type="pingpong"
+                sampler_type="pingpong",
             )
         elif self.model_name == "musicldm":
             self.model = self.model.to("cuda")
             audios = self.model(
                 batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
             ).audios
-            print("pass")
             audios = torch.tensor(audios).unsqueeze(1)
-            print("pass")
 
         processed_audios = []
         for i in range(audios.shape[0]):
