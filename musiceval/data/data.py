@@ -76,7 +76,7 @@ class EvalDataset(Dataset):
 
     def _load_audio(self, audio_path: str):
         try:
-            audio_path = os.path.join(self.data_dir, audio_path)
+            audio_path = os.path.join(self.data_dir, self.dataset_name, audio_path)
             wav, sr = torchaudio.load(audio_path, normalize=True)
             return wav, sr
         except Exception as e:
