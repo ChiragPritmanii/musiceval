@@ -174,8 +174,8 @@ class FADScore:
                 audio_gen_embedding = self.encoder._get_embedding(audio=audio_gen)
                 audio_ref_embedding = self.encoder._get_embedding(audio=audio_ref)
 
-                audio_gen_embeddings.append(audio_gen_embedding.cpu())
-                audio_ref_embeddings.append(audio_ref_embedding.cpu())
+                audio_gen_embeddings.append(audio_gen_embedding.cpu().numpy())
+                audio_ref_embeddings.append(audio_ref_embedding.cpu().numpy())
 
         return audio_gen_embeddings, audio_ref_embeddings
 

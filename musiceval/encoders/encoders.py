@@ -76,6 +76,8 @@ class ModelLoader(ABC):
                 f"Padding with zeros."
             )
             audio = np.pad(audio, (0, int(np.ceil(self.min_len * self.sr - audio.shape[0]))))
+        elif audio.shape[0] > self.min_len * self.sr:
+            audio = audio[:self.min_len * self.sr]
         return audio
 
 class CLAPLaionModel(ModelLoader):    
