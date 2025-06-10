@@ -171,6 +171,7 @@ class CLAPLaionModel(ModelLoader):
     def load_wav(self, wav_file: str):
         new = wav_file.replace(wav_file.split("/")[-1], f"convert/{self.sr}/{wav_file.split('/')[-1]}")
         new = Path(new)
+        os.makedirs(os.path.dirname(new), exist_ok=True)
         if not os.path.exists(new):
             x, fsorig = torchaudio.load(wav_file)
             x = torch.mean(x,0).unsqueeze(0) # convert to mono
@@ -183,6 +184,7 @@ class CLAPLaionModel(ModelLoader):
                 beta=14.769656459379492,
             )
             y = resampler(x)
+
             torchaudio.save(str(new), y, self.sr, encoding="PCM_S", bits_per_sample=16)
         else:
             wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
@@ -242,6 +244,7 @@ class MERTModel(ModelLoader):
     def load_wav(self, wav_file: str):
         new = wav_file.replace(wav_file.split("/")[-1], f"convert/{self.sr}/{wav_file.split('/')[-1]}")
         new = Path(new)
+        os.makedirs(os.path.dirname(new), exist_ok=True)
         if not os.path.exists(new):
             x, fsorig = torchaudio.load(wav_file)
             x = torch.mean(x,0).unsqueeze(0) # convert to mono
