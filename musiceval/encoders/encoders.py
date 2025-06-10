@@ -186,11 +186,11 @@ class CLAPLaionModel(ModelLoader):
             y = resampler(x)
 
             torchaudio.save(str(new), y, self.sr, encoding="PCM_S", bits_per_sample=16)
-        else:
-            wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
-            wav = wav.squeeze(0).numpy()
-            # Enforce minimum length
-            wav = self.enforce_min_len(wav)
+        
+        wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
+        wav = wav.squeeze(0).numpy()
+        # Enforce minimum length
+        wav = self.enforce_min_len(wav)
         return wav
 
     def _get_embedding(self, audio: np.ndarray) -> np.ndarray:
@@ -258,11 +258,11 @@ class MERTModel(ModelLoader):
             )
             y = resampler(x)
             torchaudio.save(str(new), y, self.sr, encoding="PCM_S", bits_per_sample=16)
-        else:
-            wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
-            wav = wav.squeeze(0).numpy()
-            # Enforce minimum length
-            wav = self.enforce_min_len(wav)
+        
+        wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
+        wav = wav.squeeze(0).numpy()
+        # Enforce minimum length
+        wav = self.enforce_min_len(wav)
         return wav
 
     def _get_embedding(self, audio: np.ndarray) -> np.ndarray:
