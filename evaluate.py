@@ -1,4 +1,3 @@
-import logging
 import argparse
 
 from huggingface_hub import login
@@ -53,7 +52,7 @@ def main():
             encoder_dir=args.encoder_dir,
         )
         score = scorer.calculate_clap_score()
-        logging.info(f"CLAP Score: {score}")
+        print(f"CLAP Score: {score}")
     elif args.score == "fad":
         scorer = FADScore(
             dataset=args.dataset,
@@ -63,10 +62,8 @@ def main():
             encoder_name=args.encoder_name,
             encoder_dir=args.encoder_dir,
         )
-        print("passed")
         score = scorer.calculate_fad_score()
-        print(score)
-        logging.info(f"FAD Score: {score}")
+        print(f"FAD Score: {score}")
 
 
 if __name__ == "__main__":
