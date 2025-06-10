@@ -66,7 +66,7 @@ class FADScore:
         ref_data = EvalDataset(dataset=dataset, data_dir=data_dir)
         self.ref_samples = ref_data.samples
         print(len(self.ref_samples))
-        # self.ref_audio_paths = glob(os.path.join(os.getcwd(), data_dir, ref_data.dataset_name)+"/*")
+        self.ref_audio_paths = glob(os.path.join(os.getcwd(), data_dir, ref_data.dataset_name)+"/*")
         #     os.path.join(os.getcwd(), data_dir, ref_data.dataset_name) sample["location"])
         #     for sample in self.ref_samples
         # ]
