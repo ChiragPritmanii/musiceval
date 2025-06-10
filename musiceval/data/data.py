@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset
 
 SEED = 42
-FILELIMIT = 10
+FILELIMIT = 100
 DATASETS = ["fma-caps", "music-bench"]
 
 random.seed(SEED)
