@@ -176,6 +176,9 @@ class FADScore:
 
                 audio_gen_embeddings.append(audio_gen_embedding.cpu().numpy())
                 audio_ref_embeddings.append(audio_ref_embedding.cpu().numpy())
+        
+        audio_gen_embeddings = np.concatenate(audio_gen_embeddings, axis=0)
+        audio_ref_embeddings = np.concatenate(audio_ref_embeddings, axis=0)
 
         return audio_gen_embeddings, audio_ref_embeddings
 
@@ -185,3 +188,4 @@ class FADScore:
         mu_ref, cov_ref = self.calculate_embd_statistics(audio_ref_embeddings)
         fad_score = self.calculate_frechet_distance(mu_gen, cov_gen, mu_ref, cov_ref)
         return fad_score
+    
