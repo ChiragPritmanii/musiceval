@@ -69,7 +69,7 @@ class ModelLoader(ABC):
         """
         if self.min_len < 0:
             return audio
-        if audio.shape[1] < self.min_len * self.sr:
+        if audio.shape[0] < self.min_len * self.sr:
             logging.warning(
                 f"Audio is too short for {self.name}.\n"
                 f"The model requires a minimum length of {self.min_len}s, audio is {audio.shape[0] / self.sr:.2f}s.\n"
