@@ -1,5 +1,6 @@
 import os
 import logging
+from glob import glob
 from tqdm import tqdm
 
 import torch
@@ -64,11 +65,11 @@ class FADScore:
     ):
         ref_data = EvalDataset(dataset=dataset, data_dir=data_dir)
         self.ref_samples = ref_data.samples
-        print(self.ref_samples)
-        self.ref_audio_paths = [
-            os.path.join(os.getcwd(), data_dir, ref_data.dataset_name, sample["location"])
-            for sample in self.ref_samples
-        ]
+        print(len(self.ref_samples))
+        # self.ref_audio_paths = glob(os.path.join(os.getcwd(), data_dir, ref_data.dataset_name)+"/*")
+        #     os.path.join(os.getcwd(), data_dir, ref_data.dataset_name) sample["location"])
+        #     for sample in self.ref_samples
+        # ]
         self.gen_audio_paths = [
             os.path.join(
                 os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]
