@@ -1,6 +1,8 @@
 import os
 import logging
+import random
 
+import numpy as np
 import torch
 import torchaudio
 import pytorch_lightning as pl
@@ -12,8 +14,8 @@ from transformers import AutoProcessor, MusicgenForConditionalGeneration
 
 from musiceval.data.data import EvalDataset
 
+SEED = 42
 MODELS = ["musicgen-small", "stable-audio-open-small", "musicldm"]
-
 
 class EvalPipeline(pl.LightningModule):
     def __init__(
@@ -71,13 +73,22 @@ class EvalPipeline(pl.LightningModule):
 
     def predict_dataloader(self):
         eval_data = EvalDataset(dataset=self.dataset, data_dir=self.data_dir)
+        def seed_worker(worker_id):
+            worker_seed = SEED + worker_id
+            np.random.seed(worker_seed)
+            random.seed(worker_seed)
+            torch.manual_seed(worker_seed)
+
+        g = torch.Generator()
+        g.manual_seed(SEED)
         eval_dl = DataLoader(
             eval_data,
             batch_size=self.batch_size,
-            num_workers=0,
+            num_workers=4,
             shuffle=False,
             collate_fn=eval_data.collator,
-            prefetch_factor=None,
+            worker_init_fn=seed_worker,
+            generator=g,
             pin_memory=True,
         )
         return eval_dl
@@ -117,7 +128,6 @@ class EvalPipeline(pl.LightningModule):
             wav = wav.clamp(-1, 1)
             wav = (wav * 32767).to(torch.int16).cpu()
             processed_audios.append(wav)
-        print("pass")
         audios = torch.stack(processed_audios, dim=0)
         logging.info(f"Generated {len(audios)} audio samples for batch {batch_idx}")
 

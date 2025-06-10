@@ -74,7 +74,9 @@ class EvalDataset(Dataset):
             logging.info(
                 f"Limiting dataset to {self.limit} samples for evaluation. Original size: {len(self.samples)}"
             )
-            self.samples = random.sample(self.samples, self.limit)
+            self.samples = self.samples[:]
+            rng = random.Random(SEED)  # Use a fixed-seed RNG object
+            self.samples = rng.sample(self.samples, self.limit)
 
     def __len__(self):
         return len(self.samples)
