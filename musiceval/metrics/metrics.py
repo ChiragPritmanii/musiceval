@@ -169,13 +169,13 @@ class FADScore:
         for i in tqdm(range(0, len(self.gen_audio_paths))):
             with torch.no_grad():
                 audio_gen = self.encoder.load_wav(self.gen_audio_paths[i])
-                audio_eval = self.encoder.load_wav(self.eval_audio_paths[i])
+                audio_ref = self.encoder.load_wav(self.ref_audio_paths[i])
 
                 audio_gen_embedding = self.encoder._get_embedding(audio=audio_gen)
-                audio_eval_embedding = self.encoder._get_embedding(audio=audio_eval)
+                audio_ref_embedding = self.encoder._get_embedding(audio=audio_ref)
 
                 audio_gen_embeddings.append(audio_gen_embedding)
-                audio_ref_embeddings.append(audio_eval_embedding)
+                audio_ref_embeddings.append(audio_ref_embedding)
 
         return audio_gen_embeddings, audio_ref_embeddings
 
