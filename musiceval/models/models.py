@@ -40,7 +40,7 @@ class EvalPipeline(pl.LightningModule):
         if self.model_name == "musicgen-small":
             hf_model_id = "facebook/musicgen-small"
             self.processor = AutoProcessor.from_pretrained(hf_model_id)
-            self.model = MusicgenForConditionalGeneration.from_pretrained(hf_model_id)
+            self.model = MusicgenForConditionalGeneration.from_pretrained(hf_model_id) #default cfg: 3.0
             self.model_sr = self.model.config.sampling_rate
             self.output_dir = os.path.join(
                 self.gen_data_dir, self.dataset, "musicgen-small"
@@ -98,7 +98,7 @@ class EvalPipeline(pl.LightningModule):
             inputs = self.processor(
                 text=batch["prompts"], return_tensors="pt", padding=True
             ).to(self.device)
-            audios = self.model.generate(**inputs, max_new_tokens=512)
+            audios = self.model.generate(**inputs, guidance_scale=3.0, max_new_tokens=512)
         elif self.model_name == "stable-audio-open-small":
             inputs = [
                 {"prompt": prompt, "seconds_total": 10} for prompt in batch["prompts"]
@@ -108,7 +108,7 @@ class EvalPipeline(pl.LightningModule):
                 conditioning=inputs,
                 device=self.device,
                 steps=8,
-                cfg_scale=1.0,
+                cfg_scale=3.0, # same config as musicgen/musicldm
                 batch_size=len(inputs),
                 sample_size=self.model_config["sample_size"],
                 sampler_type="pingpong",
@@ -116,8 +116,7 @@ class EvalPipeline(pl.LightningModule):
         elif self.model_name == "musicldm":
             self.model = self.model.to("cuda")
             audios = self.model(
-                batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0
-            ).audios
+                batch["prompts"], num_inference_steps=200, audio_length_in_s=10.0, guidance_scale=3.0).audios #same config as musicgen/saopen
             audios = torch.tensor(audios).unsqueeze(1)
 
         processed_audios = []
