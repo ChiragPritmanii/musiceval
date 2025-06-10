@@ -46,7 +46,7 @@ class CLAPScore:
                 embeddings = self.encoder.model.get_text_embedding(
                     batch_texts, use_tensor=True
                 )
-            text_emb.append(embeddings)
+            text_emb.append(embeddings.cpu())
         text_emb = torch.cat(text_emb, dim=0)
 
         score = 0
@@ -57,7 +57,7 @@ class CLAPScore:
                 audio = self.encoder.load_wav(self.gen_audio_paths[i])
                 audio_embedding = self.encoder._get_embedding(audio=audio)
             cosine_sim = torch.nn.functional.cosine_similarity(
-                audio_embedding, text_emb[i].unsqueeze(0), dim=1, eps=1e-8
+                audio_embedding.cpu(), text_emb[i].unsqueeze(0), dim=1, eps=1e-8
             )[0]
             score += cosine_sim
             count += 1
@@ -174,8 +174,8 @@ class FADScore:
                 audio_gen_embedding = self.encoder._get_embedding(audio=audio_gen)
                 audio_ref_embedding = self.encoder._get_embedding(audio=audio_ref)
 
-                audio_gen_embeddings.append(audio_gen_embedding)
-                audio_ref_embeddings.append(audio_ref_embedding)
+                audio_gen_embeddings.append(audio_gen_embedding.cpu())
+                audio_ref_embeddings.append(audio_ref_embedding.cpu())
 
         return audio_gen_embeddings, audio_ref_embeddings
 
