@@ -14,17 +14,12 @@ class CLAPScore:
     def __init__(self, dataset, data_dir, gen_data_dir, model_name, encoder_dir):
         ref_data = EvalDataset(dataset=dataset, data_dir=data_dir)
         self.ref_samples = ref_data.samples
-        self.ref_texts = [sample["main_caption"] for sample in self.ref_samples]
-        self.ref_audio_paths = [
-            os.path.join(os.getcwd(), data_dir, ref_data.dataset_name, sample["location"])
-            for sample in self.ref_samples
-        ]
-        self.gen_audio_paths = [
-            os.path.join(
-                os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]
-            )
-            for path in self.ref_audio_paths
-        ]
+        self.ref_audio_paths = glob(os.path.join(os.getcwd(), data_dir, ref_data.dataset_name)+"/*/*wav")
+        self.gen_audio_paths = [os.path.join(os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]) for path in self.ref_audio_paths]
+        
+        ref_audio_names = [path.split("/")[-1] for path in self.ref_audio_paths]
+        self.ref_texts = [sample["main_caption"] for sample in self.ref_samples if sample["location"].split("/")[-1] in ref_audio_names]
+        
         self.encoder = CLAPLaionModel(encoder_dir)
         self.encoder.load_model()
 
@@ -63,19 +58,11 @@ class FADScore:
     def __init__(
         self, dataset, data_dir, gen_data_dir, model_name, encoder_name, encoder_dir
     ):
-        ref_data = EvalDataset(dataset=dataset, data_dir=data_dir)
+        ref_data = EvalDataset(dataset=dataset, data_dir=data_dir, limit=-1)
         self.ref_samples = ref_data.samples
-        print(len(self.ref_samples))
-        self.ref_audio_paths = glob(os.path.join(os.getcwd(), data_dir, ref_data.dataset_name)+"/*")
-        #     os.path.join(os.getcwd(), data_dir, ref_data.dataset_name) sample["location"])
-        #     for sample in self.ref_samples
-        # ]
-        self.gen_audio_paths = [
-            os.path.join(
-                os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]
-            )
-            for path in self.ref_audio_paths
-        ]
+        self.ref_audio_paths = glob(os.path.join(os.getcwd(), data_dir, ref_data.dataset_name)+"/*/*wav")
+        self.gen_audio_paths = [os.path.join(os.getcwd(), gen_data_dir, ref_data.dataset, model_name, path.split("/")[-1]) for path in self.ref_audio_paths]
+   
         if encoder_name == "clap":
             self.encoder = CLAPLaionModel(encoder_dir)
         elif encoder_name == "mert":

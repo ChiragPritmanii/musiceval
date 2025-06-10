@@ -16,11 +16,13 @@ DATASETS = ["fma-caps", "music-bench"]
 
 random.seed(SEED)
 
+
 class EvalDataset(Dataset):
-    def __init__(self, dataset: str, data_dir: str):
+    def __init__(self, dataset: str, data_dir: str, limit: int = FILELIMIT):
         assert dataset in DATASETS, f"Dataset must be one of {DATASETS}"
         self.dataset = dataset
         self.data_dir = os.path.join(os.getcwd(), data_dir)
+        self.limit = limit
         self._load_dataset()
 
     def _load_dataset(self):
@@ -65,12 +67,14 @@ class EvalDataset(Dataset):
 
         with open(json_path, "r") as f:
             self.samples = [json.loads(line) for line in f]
-        
-        if len(self.samples) > FILELIMIT:
+
+        if self.limit < 0:
+            pass
+        elif len(self.samples) > self.limit:
             logging.info(
-                f"Limiting dataset to {FILELIMIT} samples for evaluation. Original size: {len(self.samples)}"
+                f"Limiting dataset to {self.limit} samples for evaluation. Original size: {len(self.samples)}"
             )
-            self.samples = random.sample(self.samples, FILELIMIT)
+            self.samples = random.sample(self.samples, self.limit)
 
     def __len__(self):
         return len(self.samples)
@@ -79,15 +83,15 @@ class EvalDataset(Dataset):
         try:
             audio_path = os.path.join(self.data_dir, self.dataset_name, audio_path)
             wav, sr = torchaudio.load(audio_path, normalize=True)
-            
-            fixed_len = 10*sr
+
+            fixed_len = 10 * sr
             wav_len = wav.shape[1]
-            
+
             if wav_len >= fixed_len:
                 wav = wav[:, :fixed_len]
             elif wav_len < fixed_len:
                 wav = F.pad(wav, (0, fixed_len - wav_len), "constant", value=0)
-            
+
             return wav, sr
         except Exception as e:
             print(f"Error loading item {audio_path}: {e}")
