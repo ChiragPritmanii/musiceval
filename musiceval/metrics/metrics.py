@@ -72,7 +72,7 @@ class FADScore:
     def __init__(
         self, dataset, data_dir, gen_data_dir, model_name, encoder_name, encoder_dir
     ):
-        ref_data = EvalDataset(dataset=dataset, data_dir=data_dir, limit=-1)
+        ref_data = EvalDataset(dataset=dataset, data_dir=data_dir, limit=10)
         self.ref_samples = ref_data.samples
         self.ref_samples = ref_data.samples
         self.ref_audio_paths = [
