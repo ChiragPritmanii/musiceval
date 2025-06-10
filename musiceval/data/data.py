@@ -16,7 +16,6 @@ DATASETS = ["fma-caps", "music-bench"]
 
 random.seed(SEED)
 
-
 class EvalDataset(Dataset):
     def __init__(self, dataset: str, data_dir: str, limit: int = FILELIMIT):
         assert dataset in DATASETS, f"Dataset must be one of {DATASETS}"

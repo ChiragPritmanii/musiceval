@@ -1,5 +1,6 @@
 import os
 import logging
+import random
 from glob import glob
 from tqdm import tqdm
 
@@ -10,7 +11,8 @@ from scipy import linalg
 from musiceval.data.data import EvalDataset
 from musiceval.encoders.encoders import CLAPLaionModel, MERTModel
 
-
+SEED = 42
+random.seed(SEED)
 class CLAPScore:
     def __init__(self, dataset, data_dir, gen_data_dir, model_name, encoder_dir):
         ref_data = EvalDataset(dataset=dataset, data_dir=data_dir)
