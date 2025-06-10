@@ -183,7 +183,7 @@ class CLAPLaionModel(ModelLoader):
                 beta=14.769656459379492,
             )
             y = resampler(x)
-            torchaudio.save(str(new), y, self.ml.sr, encoding="PCM_S", bits_per_sample=16)
+            torchaudio.save(str(new), y, self.sr, encoding="PCM_S", bits_per_sample=16)
         else:
             wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
             wav = wav.squeeze(0).numpy()
@@ -254,7 +254,7 @@ class MERTModel(ModelLoader):
                 beta=14.769656459379492,
             )
             y = resampler(x)
-            torchaudio.save(str(new), y, self.ml.sr, encoding="PCM_S", bits_per_sample=16)
+            torchaudio.save(str(new), y, self.sr, encoding="PCM_S", bits_per_sample=16)
         else:
             wav, _ = torchaudio.load(new, normalize=True) # normalize to [-1.0, +1.0]
             wav = wav.squeeze(0).numpy()
