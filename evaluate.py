@@ -63,7 +63,9 @@ def main():
             encoder_name=args.encoder_name,
             encoder_dir=args.encoder_dir,
         )
+        print("passed")
         score = scorer.calculate_fad_score()
+        print(score)
         logging.info(f"FAD Score: {score}")
 
 
