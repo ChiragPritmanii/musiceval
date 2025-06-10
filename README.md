@@ -33,9 +33,8 @@ python evaluate.py --score score \
 ```
 
 ### Objective Metrics
-
-| Model           | FAD(CLAP) | FAD(MERT) | CLAP(CLAP) |
-|-----------------|-----------|:----------|------------|
-| MusicGen-Small  | 0.41      | 15.62     | 0.29       |
-| SAOpen-Small    | 0.43      | 18.47     | 0.20       |
-| MusicLDM        | 0.26      | 9.53      | 0.32       |
+| Model           | Dataset | Samples | FAD(CLAP) | FAD(MERT) | CLAP(CLAP) |
+|-----------------|---------|---------|-----------|-----------|------------|
+| MusicGen-Small  | FMACaps | 100     | 0.41      | 15.62     | 0.29       |
+| SAOpen-Small    | FMACaps | 100     | 0.43      | 18.47     | 0.20       |
+| MusicLDM        | FMACaps | 100     | 0.26      | 9.53      | 0.32       |
