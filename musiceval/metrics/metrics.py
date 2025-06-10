@@ -33,6 +33,7 @@ class CLAPScore:
             )
             for path in self.ref_audio_paths
         ]
+        logging.info("Choosing CLAP model by default for CLAPScore calculation")
         self.encoder = CLAPLaionModel(encoder_dir)
         self.encoder.load_model()
 
