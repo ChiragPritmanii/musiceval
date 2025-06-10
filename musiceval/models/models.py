@@ -74,10 +74,10 @@ class EvalPipeline(pl.LightningModule):
         eval_dl = DataLoader(
             eval_data,
             batch_size=self.batch_size,
-            num_workers=8,
+            num_workers=0,
             shuffle=False,
             collate_fn=eval_data.collator,
-            prefetch_factor=2,
+            prefetch_factor=None,
             pin_memory=True,
         )
         return eval_dl
